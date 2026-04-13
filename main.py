@@ -7,10 +7,20 @@ import os
 def get_news():
     """获取新闻数据"""
     try:
-        # 使用60s API获取新闻
-        response = requests.get("https://api.60s.cn/v1/news")
+        # 添加User-Agent请求头，模拟浏览器访问
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        }
+        
+        # 使用60s API获取新闻，添加超时设置
+        print("正在请求API...")
+        response = requests.get("https://api.60s.cn/v1/news", headers=headers, timeout=10)
+        print(f"API响应状态码: {response.status_code}")
+        print(f"API响应内容预览: {response.text[:200]}")
+        
         response.raise_for_status()
         data = response.json()
+        print(f"解析后的JSON数据: {data}")
         
         news_list = data.get("news", [])
         daily_word = data.get("word", "")
@@ -52,7 +62,11 @@ def get_news():
         return html_content
         
     except Exception as e:
-        return f"获取新闻失败: {str(e)}"
+        import traceback
+        error_details = traceback.format_exc()
+        print(f"获取新闻失败: {str(e)}")
+        print(f"详细错误: {error_details}")
+        return f"获取新闻失败: {str(e)}\n\n详细错误信息:\n{error_details}"
 
 def send_email(subject, html_content):
     """发送邮件"""
