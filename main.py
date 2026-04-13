@@ -73,7 +73,7 @@ def send_email(subject, html_content):
     
     # 创建邮件
     message = MIMEText(html_content, 'html', 'utf-8')
-    message['From'] = f"每日新闻助手 <{sender_email}>"
+    message['From'] = sender_email
     message['To'] = receiver_email
     message['Subject'] = Header(subject, 'utf-8')
     
