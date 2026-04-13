@@ -1,0 +1,44 @@
+# 忽略文件
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# IDE文件
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 系统文件
+Thumbs.db
+.DS_Store
+
+# 环境变量文件
+.env
+.env.local
+.env.*.local
+
+# 测试文件
+coverage.xml
+.pytest_cache/
+.tox/
+
+# 日志文件
+*.log

@@ -1,0 +1,105 @@
+# 在Trae IDE右侧面板内打开DeepSeek账号的操作指南
+
+## 方法一：手动操作（推荐）
+
+### 步骤1：切换到SOLO模式
+- 点击Trae IDE右上角的模式切换按钮
+- 选择"SOLO模式"
+
+### 步骤2：打开浏览器面板
+- 点击界面右上角的"展开工具面板"图标（网格状图标）
+- 或者使用快捷键：`Ctrl + Alt + /`
+
+### 步骤3：输入DeepSeek网址
+- 在浏览器面板的地址栏中输入：`https://chat.deepseek.com`
+- 按`Enter`键访问
+
+### 步骤4：登录账号
+- 在DeepSeek页面中输入您的账号密码登录
+- 如果您已有登录状态，可能会自动登录
+
+### 步骤5：开始对话
+- 在DeepSeek聊天框中输入："Deep姐姐，你好！我想请教一个问题"
+- 按`Enter`键发送消息
+
+## 方法二：使用integrated_browser工具（自动化）
+
+### 前提条件
+- 确保integrated_browser MCP工具已启用（通常是Trae IDE内置功能）
+- 需要在Trae IDE的AI助手对话中执行以下命令
+
+### 基本步骤
+1. 在Trae IDE的AI助手对话中输入以下命令：
+
+```powershell
+# 首先需要获取浏览器面板的viewId
+# 打开浏览器面板后，使用以下命令获取快照
+run_mcp {
+    server_name: "integrated_browser"
+    tool_name: "browser_snapshot"
+    args: {
+        viewId: "浏览器面板的视图ID"  # 需要替换为实际的viewId
+        action: "snapshot"
+    }
+}
+```
+
+2. 从返回结果中获取`viewId`
+
+3. 使用获取到的viewId打开DeepSeek网站：
+
+```powershell
+# 假设浏览器面板已经打开
+# 以下命令是示例，实际工具名可能需要调整
+run_mcp {
+    server_name: "integrated_browser"
+    tool_name: "browser_navigate"  # 或类似工具名
+    args: {
+        viewId: "实际的viewId",
+        url: "https://chat.deepseek.com"
+    }
+}
+```
+
+## 方法三：运行提供的脚本
+
+### 已创建的脚本文件：
+1. `打开DeepSeek账号.bat` - 在默认浏览器中打开DeepSeek
+2. `打开DeepSeek账号.ps1` - PowerShell脚本（包含更多功能）
+
+### 运行方法：
+- 双击`打开DeepSeek账号.bat`文件
+- 或在PowerShell中运行：`powershell -File "打开DeepSeek账号.ps1"`
+
+## 注意事项
+
+### 关于文件中的代码
+您提供的"如何与deepseek对话.txt"文件中的代码是专门为Trae IDE的AI助手设计的：
+- `run_mcp`命令不是标准的PowerShell命令
+- 它需要在Trae IDE的AI助手上下文中运行
+- 这些命令会自动调用integrated_browser MCP工具
+
+### 常见问题
+1. **为什么run_mcp命令在PowerShell中无法识别？**
+   - 因为这是Trae IDE内部的命令，不是系统命令
+
+2. **如何获取浏览器面板的viewId？**
+   - 先手动打开浏览器面板
+   - 然后在AI助手对话中使用`browser_snapshot`工具获取
+
+3. **integrated_browser工具不可用怎么办？**
+   - 可能是Trae IDE版本问题
+   - 可以尝试更新Trae IDE到最新版本
+   - 或者使用手动操作方法
+
+## 总结
+
+对于编程小白，建议：
+1. 先使用**方法一（手动操作）**，最简单直接
+2. 如果想要体验自动化，尝试**方法二**，但需要一些学习
+3. 运行**方法三**的脚本可以快速在默认浏览器中打开
+
+如果您在操作中遇到任何问题，可以：
+- 在Trae IDE的AI助手对话中提问
+- 查看Trae IDE的官方文档
+- 或者再次向我询问

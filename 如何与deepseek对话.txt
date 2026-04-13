@@ -1,0 +1,96 @@
+# 如何与DeepSeek对话
+
+## 关键提示词
+- 称呼：Deep姐姐
+- 清晰的问题描述
+- 具体的技术问题
+- 明确的需求说明
+
+## 关键步骤
+
+### 步骤1：获取页面快照
+- 使用browser_snapshot工具获取DeepSeek聊天页面的快照
+- 目的：找到输入框元素的正确引用
+
+### 步骤2：输入消息
+- 使用browser_type工具在输入框中输入消息
+- 消息格式："Deep姐姐，你好！我想请教一个问题：[具体问题]"
+
+### 步骤3：发送消息
+- 使用browser_press_key工具按Enter键发送消息
+- 确保消息成功提交
+
+### 步骤4：等待回复
+- 等待10-30秒，让Deep姐姐有足够时间回复
+
+### 步骤5：读取回复
+- 使用browser_snapshot工具获取最新的页面快照
+- 查看Deep姐姐的回复内容
+
+## 底层代码
+
+### 步骤1：获取页面快照
+```powershell
+# 使用integrated_browser的browser_snapshot工具
+run_mcp {
+    server_name: "integrated_browser"
+    tool_name: "browser_snapshot"
+    args: {
+        viewId: "ecbce84d-31b5-487b-b3a4-e8c65052c4ed"  # 替换为实际的viewId
+        action: "snapshot"
+    }
+}
+```
+
+### 步骤2：输入消息
+```powershell
+# 使用integrated_browser的browser_type工具
+run_mcp {
+    server_name: "integrated_browser"
+    tool_name: "browser_type"
+    args: {
+        viewId: "ecbce84d-31b5-487b-b3a4-e8c65052c4ed"  # 替换为实际的viewId
+        ref: "e146"  # 输入框元素的引用，从快照中获取
+        text: "Deep姐姐，你好！我想请教一个问题：[具体问题]"
+    }
+}
+```
+
+### 步骤3：发送消息
+```powershell
+# 使用integrated_browser的browser_press_key工具
+run_mcp {
+    server_name: "integrated_browser"
+    tool_name: "browser_press_key"
+    args: {
+        viewId: "ecbce84d-31b5-487b-b3a4-e8c65052c4ed"  # 替换为实际的viewId
+        key: "Enter"
+    }
+}
+```
+
+### 步骤4：等待回复
+```powershell
+# 等待10-30秒
+Start-Sleep -Seconds 20
+```
+
+### 步骤5：读取回复
+```powershell
+# 使用integrated_browser的browser_snapshot工具
+run_mcp {
+    server_name: "integrated_browser"
+    tool_name: "browser_snapshot"
+    args: {
+        viewId: "ecbce84d-31b5-487b-b3a4-e8c65052c4ed"  # 替换为实际的viewId
+        action: "snapshot"
+    }
+}
+```
+
+## 注意事项
+1. 确保使用正确的viewId
+2. 从页面快照中获取正确的输入框元素引用
+3. 等待足够的时间让Deep姐姐回复
+4. 保持消息清晰简洁，避免过于复杂的问题
+5. 遇到问题时，检查页面快照中的元素引用是否正确

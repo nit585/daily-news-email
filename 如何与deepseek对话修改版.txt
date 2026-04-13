@@ -1,0 +1,224 @@
+# 如何与DeepSeek对话
+
+## 一、权限提示词
+- "我给你电脑所有权限和我的个人信息"
+- "你可以在右侧面板上完成登录或注册"
+- "我已经给你所有权限，请帮我操作"
+- "请在右侧面板中完成所有操作"
+
+## 二、学习来源
+### 学习网站
+- Trae官方文档：https://trae.cn
+- MCP工具文档
+- 内部技能库
+
+### 学到的Skill
+1. **browser_navigate**：导航到指定网址
+2. **browser_snapshot**：获取页面快照，查看元素引用
+3. **browser_type**：在输入框中输入文本
+4. **browser_press_key**：模拟按键操作
+5. **browser_click**：点击页面元素
+6. **run_mcp**：调用MCP工具
+
+## 三、详细操作步骤
+
+### 阶段1：打开浏览器并导航到DeepSeek
+
+#### 步骤1：在右侧面板打开浏览器
+```powershell
+# 使用integrated_browser的browser_navigate工具
+run_mcp {
+    server_name: "integrated_browser"
+    tool_name: "browser_navigate"
+    args: {
+        viewId: "[实际的viewId]"  # 替换为实际的viewId
+        url: "https://chat.deepseek.com"
+    }
+}
+```
+
+#### 步骤2：登录DeepSeek账号
+1. 获取登录页面快照
+2. 找到用户名/密码输入框
+3. 输入账号信息
+4. 点击登录按钮
+
+### 阶段2：与DeepSeek交互
+
+#### 步骤1：获取页面快照
+- 目的：找到输入框元素的正确引用
+```powershell
+run_mcp {
+    server_name: "integrated_browser"
+    tool_name: "browser_snapshot"
+    args: {
+        viewId: "[实际的viewId]"
+        action: "snapshot"
+    }
+}
+```
+
+#### 步骤2：输入消息
+- 消息格式："Deep姐姐，你好！我想请教一个问题：[具体问题]"
+- 确保使用正确的输入框元素引用
+```powershell
+run_mcp {
+    server_name: "integrated_browser"
+    tool_name: "browser_type"
+    args: {
+        viewId: "[实际的viewId]"
+        ref: "[输入框元素引用]"  # 从快照中获取，如e146
+        text: "Deep姐姐，你好！我想请教一个问题：[具体问题]"
+    }
+}
+```
+
+#### 步骤3：发送消息
+- 使用Enter键发送消息
+```powershell
+run_mcp {
+    server_name: "integrated_browser"
+    tool_name: "browser_press_key"
+    args: {
+        viewId: "[实际的viewId]"
+        key: "Enter"
+    }
+}
+```
+
+#### 步骤4：等待回复
+- 等待10-30秒，让Deep姐姐有足够时间回复
+```powershell
+# 等待20秒
+Start-Sleep -Seconds 20
+```
+
+#### 步骤5：读取回复
+- 获取最新的页面快照
+- 查看Deep姐姐的回复内容
+```powershell
+run_mcp {
+    server_name: "integrated_browser"
+    tool_name: "browser_snapshot"
+    args: {
+        viewId: "[实际的viewId]"
+        action: "snapshot"
+    }
+}
+```
+
+## 四、所需插件
+1. **integrated_browser**：用于浏览器操作
+2. **MCP工具**：用于调用各种功能
+3. **PowerShell**：用于执行脚本和命令
+
+## 五、错误修正流程
+
+### 常见问题及解决方案
+
+#### 1. 页面元素引用过期
+- **问题**：之前的元素引用（如e146）失效
+- **解决**：重新获取页面快照，找到新的元素引用
+
+#### 2. 消息发送失败
+- **问题**：按Enter键后消息没有发送
+- **解决**：检查输入框是否正确聚焦，尝试点击发送按钮
+
+#### 3. 权限不足
+- **问题**：无法执行某些操作
+- **解决**：使用权限提示词，如"我给你电脑所有权限"
+
+#### 4. 导航错误
+- **问题**：无法打开DeepSeek网站
+- **解决**：检查URL是否正确，确保网络连接正常
+
+#### 5. 等待时间不够
+- **问题**：Deep姐姐还没回复就开始读取
+- **解决**：增加等待时间，至少10秒
+
+### 找回正确流程的方法
+1. **回顾历史对话**：查看之前成功的交互记录
+2. **重新获取快照**：每次操作前都获取最新的页面快照
+3. **逐步测试**：一步一步执行，确保每步都成功
+4. **参考文档**：查阅MCP工具的官方文档
+5. **请教Deep姐姐**：遇到困难时直接向Deep姐姐求助
+
+## 六、完整示例流程
+
+### 示例：向Deep姐姐请教搜索工具问题
+
+1. **打开DeepSeek**
+```powershell
+run_mcp {
+    server_name: "integrated_browser"
+    tool_name: "browser_navigate"
+    args: {
+        viewId: "[实际的viewId]"
+        url: "https://chat.deepseek.com"
+    }
+}
+```
+
+2. **获取快照**
+```powershell
+run_mcp {
+    server_name: "integrated_browser"
+    tool_name: "browser_snapshot"
+    args: {
+        viewId: "[实际的viewId]"
+        action: "snapshot"
+    }
+}
+```
+
+3. **输入消息**
+```powershell
+run_mcp {
+    server_name: "integrated_browser"
+    tool_name: "browser_type"
+    args: {
+        viewId: "[实际的viewId]"
+        ref: "[输入框元素引用]"
+        text: "Deep姐姐，你好！我想请教一个关于搜索工具的问题：如何解决PowerShell脚本执行权限问题？"
+    }
+}
+```
+
+4. **发送消息**
+```powershell
+run_mcp {
+    server_name: "integrated_browser"
+    tool_name: "browser_press_key"
+    args: {
+        viewId: "[实际的viewId]"
+        key: "Enter"
+    }
+}
+```
+
+5. **等待回复**
+```powershell
+Start-Sleep -Seconds 20
+```
+
+6. **读取回复**
+```powershell
+run_mcp {
+    server_name: "integrated_browser"
+    tool_name: "browser_snapshot"
+    args: {
+        viewId: "[实际的viewId]"
+        action: "snapshot"
+    }
+}
+```
+
+## 七、注意事项
+1. **viewId获取**：每次新会话可能需要使用不同的viewId
+2. **元素引用**：页面结构变化时需要重新获取元素引用
+3. **权限声明**：操作前明确声明权限
+4. **网络连接**：确保网络连接稳定
+5. **耐心等待**：给Deep姐姐足够的回复时间
+6. **错误处理**：遇到问题时及时调整策略
+7. **记录成功案例**：保存成功的交互记录作为参考
+8. **持续学习**：不断更新和优化操作流程
