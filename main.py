@@ -4,6 +4,22 @@ from email.mime.text import MIMEText
 from email.header import Header
 import os
 
+def translate_text(text, from_lang='en', to_lang='zh'):
+    """简单的翻译功能，使用免费翻译API"""
+    try:
+        # 使用MyMemory免费翻译API
+        url = f"https://api.mymemory.translated.net/get?q={text}&langpair={from_lang}|{to_lang}"
+        response = requests.get(url, timeout=10)
+        data = response.json()
+        
+        if data.get('responseStatus') == 200:
+            return data['responseData']['translatedText']
+        else:
+            return text
+    except Exception as e:
+        print(f"翻译失败: {e}")
+        return text
+
 def get_news_from_newsapi():
     """从NewsAPI.org获取国际新闻"""
     try:
